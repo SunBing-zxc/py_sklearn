@@ -368,7 +368,7 @@ def gradient_descent_section():
             with placeholder.container():
                 fig = plot_gradient_descent_step(X, y, slopes[i], intercepts[i], losses[i], i, losses)
                 st.pyplot(fig)
-                time.sleep(0.05)
+                time.sleep(0.1)
         convergence_status = "模型收敛" if abs(losses[-1] - losses[-2]) < 0.01 else "模型不收敛"            
 
         st.success(f"梯度下降完成!最终参数: 斜率={slopes[-1]:.2f}, 截距={intercepts[-1]:.2f},  "+convergence_status)
@@ -873,6 +873,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
