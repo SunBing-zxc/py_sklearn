@@ -18,13 +18,24 @@ st.set_page_config(page_title="线性回归交互式学习平台", layout="wide"
 st.title("📚 线性回归交互式学习平台")
 st.subheader("Success7")
 
-plt.rcParams['font.sans-serif'] = [
-    'WenQuanYi Micro Hei',
-    'Noto Sans CJK SC',
-    'Droid Sans Fallback',
-    'sans-serif'
+import matplotlib.font_manager as fm
+# 尝试设置常见中文字体
+chinese_fonts = [
+    'SimHei', 'WenQuanYi Micro Hei', 'Heiti TC',
+    'Noto Sans CJK SC', 'Droid Sans Fallback'
 ]
-plt.rcParams['axes.unicode_minus'] = False  # 负号正常显示
+    
+# 检查系统中是否有可用的中文字体
+available_fonts = [f.name for f in fm.findSystemFonts(fontpaths=None, fontext='ttf')]
+for font in chinese_fonts:
+    if font in available_fonts:
+        plt.rcParams["font.family"] = font
+        plt.rcParams['axes.unicode_minus'] = False  # 解决负号显示问题
+        return True
+    
+# 如果没有找到中文字体，尝试使用默认字体并设置fallback
+plt.rcParams["font.family"] = ["sans-serif", "WenQuanYi Micro Hei", "Heiti TC"]
+plt.rcParams['axes.unicode_minus'] = False
 
 def generate_student_evaluation():
     """调用Deepseek API生成学生评价"""
@@ -882,6 +893,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
