@@ -18,7 +18,7 @@ st.set_page_config(page_title="线性回归交互式学习平台", layout="wide"
 st.title("📚 线性回归交互式学习平台")
 
 # 设置中文字体支持
-plt.rcParams['font.sans-serif'] = ['WenQuanYi Micro Hei']
+plt.rcParams["font.family"] = ["WenQuanYi Micro Hei", "Heiti TC", "sans-serif"]
 plt.rcParams['axes.unicode_minus'] = False
 
 def generate_student_evaluation():
@@ -877,5 +877,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
