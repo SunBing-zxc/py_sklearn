@@ -3,7 +3,7 @@
 import streamlit as st
 import numpy as np
 import pandas as pd
-#import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.metrics import mean_squared_error, r2_score
@@ -876,6 +876,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
