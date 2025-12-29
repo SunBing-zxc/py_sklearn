@@ -16,25 +16,10 @@ from learning_report import generate_evaluation
 # 设置页面
 st.set_page_config(page_title="线性回归交互式学习平台", layout="wide")
 st.title("📚 线性回归交互式学习平台")
-st.subheader("Success7")
-
-import matplotlib.font_manager as fm
-# 尝试设置常见中文字体
-chinese_fonts = [
-    'WenQuanYi Micro Hei', 'Heiti TC',
-    'Noto Sans CJK SC', 'Droid Sans Fallback'
-]
-    
-# 检查系统中是否有可用的中文字体
-available_fonts = [f.name for f in fm.findSystemFonts(fontpaths=None, fontext='ttf')]
-for font in chinese_fonts:
-    if font in available_fonts:
-        plt.rcParams["font.family"] = font
-        plt.rcParams['axes.unicode_minus'] = False  # 解决负号显示问题
-        return True
+st.subheader("Success8")
     
 # 如果没有找到中文字体，尝试使用默认字体并设置fallback
-plt.rcParams["font.family"] = ["sans-serif", "WenQuanYi Micro Hei", "Heiti TC"]
+plt.rcParams["font.family"] = 'Noto Sans CJK SC'
 plt.rcParams['axes.unicode_minus'] = False
 
 def generate_student_evaluation():
@@ -893,6 +878,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
