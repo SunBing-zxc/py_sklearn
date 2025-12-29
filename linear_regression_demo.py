@@ -20,8 +20,8 @@ st.subheader("Success4")
 
 # 设置中文字体支持
 # 清除Matplotlib缓存（关键！避免缓存导致配置不生效）
-matplotlib.rcParams.clear()
-# 重建字体索引（解决字体找不到的问题）
+plt.rcParams.clear()
+# 体索引（解决字体找不到的问题）
 fm._rebuild()
 # 多字体兜底配置（Streamlit Cloud必生效）
 plt.rcParams["font.family"] = [
@@ -889,6 +889,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
