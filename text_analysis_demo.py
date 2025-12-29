@@ -25,10 +25,6 @@ from learning_report import generate_evaluation
 st.set_page_config(page_title="文本分析与分类学习平台", layout="wide")
 st.title("📄 文本分析与分类交互式学习平台")
 
-# 中文字体设置
-plt.rcParams["font.sans-serif"] = ["SimHei", "WenQuanYi Micro Hei", "Heiti TC"]
-plt.rcParams["axes.unicode_minus"] = False
-
 # 初始化会话状态（在主程序入口处）
 def init_session_state():
     if "text_analysis_records" not in st.session_state:
@@ -1024,3 +1020,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
