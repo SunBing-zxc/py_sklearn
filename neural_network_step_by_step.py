@@ -12,6 +12,7 @@ import json
 import time
 from datetime import datetime
 from learning_report import generate_report_step
+import os
 # 特征名称中英文映射
 FEATURE_NAME_MAP = {
     'MedInc': '收入中位数',
@@ -1490,4 +1491,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
