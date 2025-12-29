@@ -11,9 +11,6 @@ from sklearn.metrics import mean_squared_error, r2_score
 import time
 from learning_report import generate_report_step
 from datetime import datetime
-# 设置中文字体
-plt.rcParams['font.sans-serif'] = ['SimHei']
-plt.rcParams['axes.unicode_minus'] = False
 
 st.set_page_config(layout="wide")
 
