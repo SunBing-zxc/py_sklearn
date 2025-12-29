@@ -152,7 +152,7 @@ def step0():
     all_answered = all(ans is not None for ans in current_answers)
     if all_answered and check_quiz(current_answers, correct_answers):
         st.info("太棒了！🎉 你已掌握基础概念，这是超棒的开始！准备好深入分析吧！🚀")
-        if st.button("进入步骤1：数据观察与理解", key="next_step0"):
+        if st.button("进入下一步：数据观察与理解", key="next_step0"):
             complete_step(1)  # 标记步骤1完成
             st.session_state.step += 1
             st.rerun()
@@ -270,7 +270,7 @@ print("疾病预测评分 标准差：", np.___Q4___(y_raw)) # 计算目标变�
     
     if st.session_state.step1_success:
         st.info("哇！✨ 数据观察任务完美完成，太厉害啦！为后续分析打下好基础，继续加油！💪")
-        if st.button("进入步骤2：数据预处理", key="to_step2"):
+        if st.button("进入下一步：数据预处理", key="to_step2"):
             complete_step(2)  # 标记步骤2完成
             st.session_state.step += 1
             st.session_state.step1_success = False
@@ -395,7 +395,7 @@ print("测试集特征形状：", X_test_scaled.shape)
     # 下一步按钮
     if st.session_state.step2_success:
         st.info("太出色了！🌟 数据预处理滴水不漏，真了不起！赶紧进入模型构建环节吧！冲呀！")
-        if st.button("进入步骤3：构建线性回归模型", key="to_step3"):
+        if st.button("进入下一步：构建线性回归模型", key="to_step3"):
             complete_step(3)  # 标记步骤3完成
             st.session_state.step = 3
             st.session_state.step2_success = False
@@ -493,7 +493,7 @@ print("模型参数：", model.___Q3___())
     # 下一步按钮
     if st.session_state.step3_success:
         st.info("不可思议！🤩 模型构建成功，每一步都精准！就等你来训练模型啦！🔥")
-        if st.button("进入步骤4：模型训练与预测", key="to_step4"):
+        if st.button("进入下一步：模型训练与预测", key="to_step4"):
             complete_step(4)  # 标记步骤4完成
             st.session_state.step = 4
             st.session_state.step3_success = False
@@ -619,7 +619,7 @@ print("前5个实际值：", y_test[:5])
     # 下一步按钮
     if st.session_state.step4_success:
         st.success("太棒了！🚀 模型训练和预测成功，每一步都很精准！赶紧看看结果吧～")
-        if st.button("进入步骤5：模型评估", key="to_step5"):
+        if st.button("进入下一步：模型评估", key="to_step5"):
             complete_step(5)  # 标记步骤5完成
             st.session_state.step = 5
             st.session_state.step4_success = False
@@ -732,7 +732,7 @@ print(f"决定系数（R²）：{r2:.2f}")
     # 下一步按钮
     if st.session_state.step5_success:
         st.success("太出色了！🌟 模型评估完成，指标计算准确无误！快去看看模型表现吧～")
-        if st.button("进入步骤6：总结与思考", key="to_step6"):
+        if st.button("进入下一步：总结与思考", key="to_step6"):
             complete_step(6)  # 标记步骤6完成
             st.session_state.step = 6
             st.session_state.step5_success = False
