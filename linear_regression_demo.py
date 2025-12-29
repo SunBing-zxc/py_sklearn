@@ -16,15 +16,22 @@ from learning_report import generate_evaluation
 # 设置页面
 st.set_page_config(page_title="线性回归交互式学习平台", layout="wide")
 st.title("📚 线性回归交互式学习平台")
-st.subheader("Success3")
+st.subheader("Success4")
+
 # 设置中文字体支持
+# 清除Matplotlib缓存（关键！避免缓存导致配置不生效）
+matplotlib.rcParams.clear()
+# 重建字体索引（解决字体找不到的问题）
+fm._rebuild()
+# 多字体兜底配置（Streamlit Cloud必生效）
 plt.rcParams["font.family"] = [
-    "Noto Sans CJK SC",    # 优先思源黑体
-    "WenQuanYi Micro Hei",  # 文泉驿微米黑（Linux常见）
-    "Heiti TC",             # 黑体（兼容macOS/Linux）
-    "Arial Unicode MS"      # 通用多语言字体
+    "Noto Sans CJK SC",    # 思源黑体（Cloud预装）
+    "WenQuanYi Micro Hei", # 文泉驿（Cloud预装）
+    "DejaVu Sans",         # Linux默认字体（兜底）
+    "sans-serif"
 ]
-plt.rcParams['axes.unicode_minus'] = False
+plt.rcParams['axes.unicode_minus'] = False  # 负号正常显示
+plt.rcParams['font.sans-serif'] = plt.rcParams["font.family"]  # 兼容旧版写法
 
 def generate_student_evaluation():
     """调用Deepseek API生成学生评价"""
@@ -882,6 +889,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
