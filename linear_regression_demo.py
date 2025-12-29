@@ -16,8 +16,12 @@ from learning_report import generate_evaluation
 # 设置页面
 st.set_page_config(page_title="线性回归交互式学习平台", layout="wide")
 st.title("📚 线性回归交互式学习平台")
-st.subheader("Success4")
+st.subheader("Success5")
 
+# 放在代码开头，运行后在Streamlit页面查看输出
+available_fonts = [f.name for f in fm.findSystemFonts()]
+st.write("✅ 环境中可用的中文字体：")
+st.write([f for f in available_fonts if "Noto" in f or "Hei" in f])
 # 设置中文字体支持
 
 plt.rcParams["font.family"] = [
@@ -885,6 +889,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
