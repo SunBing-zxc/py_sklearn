@@ -20,10 +20,6 @@ from learning_report import generate_evaluation
 st.set_page_config(page_title="逻辑回归交互式学习平台", layout="wide")
 st.title("📚 逻辑回归交互式学习平台")
 
-# 设置中文字体支持
-plt.rcParams['font.sans-serif'] = ['SimHei']
-plt.rcParams['axes.unicode_minus'] = False
-
 def display_chat_interface(context=""):
     """显示聊天界面"""
     st.sidebar.markdown("---")
