@@ -19,7 +19,6 @@ st.title("📚 线性回归交互式学习平台")
 st.subheader("Success7")
 
 plt.rcParams['font.sans-serif'] = [
-    'DejaVu Sans',
     'WenQuanYi Micro Hei',
     'Noto Sans CJK SC',
     'Droid Sans Fallback',
@@ -883,6 +882,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
