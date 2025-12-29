@@ -4,34 +4,82 @@
 import streamlit as st
 import numpy as np
 
-# 定义安装 Noto CJK 字体的函数
-def install_noto_cjk_fonts():
+# 第一步：导入所有必需的模块（解决 subprocess 未定义问题）
+import streamlit as st
+import subprocess  # 关键：必须导入这个模块
+import os
+import matplotlib.pyplot as plt
+import matplotlib.font_manager as fm
+
+
+# 第二步：定义字体安装函数（修正导入问题 + 优化逻辑）
+def install_and_setup_chinese_fonts():
     try:
-        # 1. 检查字体包是否已安装
+        # 1. 检查 fonts-noto-cjk 包是否已安装
         result = subprocess.run(
             ["dpkg", "-l", "fonts-noto-cjk"],
             capture_output=True,
             text=True
         )
-        # 2. 如果未安装，则执行安装命令
+        
+        # 2. 未安装则自动安装（Streamlit Cloud 无需 sudo）
         if "ii  fonts-noto-cjk" not in result.stdout:
-            st.info("正在安装思源黑体（Noto CJK）字体包...")
-            # 执行更新+安装（Streamlit Cloud 无需 sudo，直接执行）
-            subprocess.run(["apt", "update"], capture_output=True)
-            subprocess.run(
-                ["apt", "install", "-y", "fonts-noto-cjk"],
-                capture_output=True
-            )
-            # 刷新字体缓存
-            subprocess.run(["fc-cache", "-fv"], capture_output=True)
-            st.success("思源黑体安装成功！")
+            with st.spinner("正在安装思源黑体（Noto CJK）字体包..."):
+                # 更新软件源（静默执行，不输出冗余信息）
+                subprocess.run(
+                    ["apt", "update"],
+                    capture_output=True,
+                    text=True
+                )
+                # 安装字体包（-y 自动确认）
+                install_result = subprocess.run(
+                    ["apt", "install", "-y", "fonts-noto-cjk"],
+                    capture_output=True,
+                    text=True
+                )
+                # 检查安装是否成功
+                if install_result.returncode == 0:
+                    # 刷新字体缓存
+                    subprocess.run(["fc-cache", "-fv"], capture_output=True)
+                    st.success("✅ 思源黑体安装成功！")
+                else:
+                    st.warning(f"⚠️ 字体安装失败：{install_result.stderr}")
         else:
-            st.success("思源黑体已预装，无需重复安装")
+            st.success("✅ 思源黑体已预装，无需重复安装")
+        
+        # 3. 配置 Matplotlib 使用思源黑体
+        fm._rebuild()  # 强制刷新字体缓存
+        # 优先使用安装的思源黑体
+        plt.rcParams['font.family'] = 'Noto Sans CJK SC'
+        plt.rcParams['axes.unicode_minus'] = False  # 解决负号显示问题
+        
+        # 4. 配置 Plotly 使用思源黑体
+        px.defaults.font = dict(
+            family="Noto Sans CJK SC, sans-serif",
+            size=12,
+            color="#333333"
+        )
+        
     except Exception as e:
-        st.warning(f"字体安装失败（不影响核心功能）：{str(e)}")
+        st.warning(f"⚠️ 字体配置异常（不影响核心功能）：{str(e)}")
+        # 兜底方案：使用系统备选字体
+        plt.rcParams['font.sans-serif'] = ['WenQuanYi Micro Hei', 'Droid Sans Fallback']
+        plt.rcParams['axes.unicode_minus'] = False
 
-# 调用安装函数（部署时自动执行）
-install_noto_cjk_fonts()
+# 第三步：调用函数（部署时自动执行）
+install_and_setup_chinese_fonts()
+
+
+# ---------------------- 测试中文显示（可选）----------------------
+st.subheader("中文显示测试")
+# Matplotlib 测试
+fig, ax = plt.subplots(figsize=(6, 3))
+ax.set_title("测试标题：线性回归分析（思源黑体）", fontsize=14)
+ax.plot([1,2,3], [4,5,6], label="测试数据：中文标签")
+ax.legend()
+st.pyplot(fig)
+
+
 
 
 # 设置页面配置
