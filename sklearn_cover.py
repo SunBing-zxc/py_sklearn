@@ -11,63 +11,37 @@ import os
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
 
+# 保留开头的字体加载函数 + 调用
+import streamlit as st
+import os
+import matplotlib.pyplot as plt
+import matplotlib.font_manager as fm
 
-# 第二步：定义字体安装函数（修正导入问题 + 优化逻辑）
-def install_and_setup_chinese_fonts():
-    try:
-        # 1. 检查 fonts-noto-cjk 包是否已安装
-        result = subprocess.run(
-            ["dpkg", "-l", "fonts-noto-cjk"],
-            capture_output=True,
-            text=True
-        )
-        
-        # 2. 未安装则自动安装（Streamlit Cloud 无需 sudo）
-        if "ii  fonts-noto-cjk" not in result.stdout:
-            with st.spinner("正在安装思源黑体（Noto CJK）字体包..."):
-                # 更新软件源（静默执行，不输出冗余信息）
-                subprocess.run(
-                    ["apt", "update"],
-                    capture_output=True,
-                    text=True
-                )
-                # 安装字体包（-y 自动确认）
-                install_result = subprocess.run(
-                    ["apt", "install", "-y", "fonts-noto-cjk"],
-                    capture_output=True,
-                    text=True
-                )
-                # 检查安装是否成功
-                if install_result.returncode == 0:
-                    # 刷新字体缓存
-                    subprocess.run(["fc-cache", "-fv"], capture_output=True)
-                    st.success("✅ 思源黑体安装成功！")
-                else:
-                    st.warning(f"⚠️ 字体安装失败：{install_result.stderr}")
-        else:
-            st.success("✅ 思源黑体已预装，无需重复安装")
-        
-        # 3. 配置 Matplotlib 使用思源黑体
-        fm._rebuild()  # 强制刷新字体缓存
-        # 优先使用安装的思源黑体
-        plt.rcParams['font.family'] = 'Noto Sans CJK SC'
-        plt.rcParams['axes.unicode_minus'] = False  # 解决负号显示问题
-        
-        # 4. 配置 Plotly 使用思源黑体
-        px.defaults.font = dict(
-            family="Noto Sans CJK SC, sans-serif",
-            size=12,
-            color="#333333"
-        )
-        
-    except Exception as e:
-        st.warning(f"⚠️ 字体配置异常（不影响核心功能）：{str(e)}")
-        # 兜底方案：使用系统备选字体
-        plt.rcParams['font.sans-serif'] = ['WenQuanYi Micro Hei', 'Droid Sans Fallback']
+def setup_chinese_font():
+    font_path = os.path.join(os.path.dirname(__file__), "fonts", "NotoSansSC-Regular.otf")
+    if not os.path.exists(font_path):
+        st.warning("字体文件未找到")
+        plt.rcParams['font.sans-serif'] = ['WenQuanYi Micro Hei']
         plt.rcParams['axes.unicode_minus'] = False
+        return
+    try:
+        font_prop = fm.FontProperties(fname=font_path)
+        fm.fontManager.addfont(font_path)
+        plt.rcParams['font.family'] = font_prop.get_name()
+        plt.rcParams['axes.unicode_minus'] = False
+        st.success("字体加载成功")
+    except Exception as e:
+        st.warning(f"字体加载异常：{e}")
 
-# 第三步：调用函数（部署时自动执行）
-install_and_setup_chinese_fonts()
+setup_chinese_font()
+
+# 你的业务代码（示例：绘制业务相关图表）
+st.title("我的业务分析页面")
+fig, ax = plt.subplots()
+ax.set_title("月度销售额分析（2025）")  # 中文标题
+ax.bar(["1月","2月","3月"], [100, 200, 150], label="销售额（万元）")
+ax.legend()
+st.pyplot(fig)
 
 
 # ---------------------- 测试中文显示（可选）----------------------
