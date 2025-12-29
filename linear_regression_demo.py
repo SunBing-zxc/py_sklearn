@@ -16,9 +16,14 @@ from learning_report import generate_evaluation
 # 设置页面
 st.set_page_config(page_title="线性回归交互式学习平台", layout="wide")
 st.title("📚 线性回归交互式学习平台")
-st.subheader("Success2")
+st.subheader("Success3")
 # 设置中文字体支持
-plt.rcParams["font.family"] = ["Noto Sans CJK SC", "sans-serif"]
+plt.rcParams["font.family"] = [
+    "Noto Sans CJK SC",    # 优先思源黑体
+    "WenQuanYi Micro Hei",  # 文泉驿微米黑（Linux常见）
+    "Heiti TC",             # 黑体（兼容macOS/Linux）
+    "Arial Unicode MS"      # 通用多语言字体
+]
 plt.rcParams['axes.unicode_minus'] = False
 
 def generate_student_evaluation():
@@ -877,6 +882,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
