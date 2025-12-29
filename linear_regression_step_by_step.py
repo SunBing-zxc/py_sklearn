@@ -208,11 +208,11 @@ print("疾病预测评分 标准差：", np.___Q4___(y_raw)) # 计算目标变�
         ]
         options = [
             [".shape", ".size", ".dim", ".shape()"],
-            ["[0:3]", "[3:]", "[0,3]", "[3]"],
+            ["0:3", "3:", "0,3", "3"],
             ["mean", "average", "median", "sum"],
             ["std", "var", "stddev", "deviation"]
         ]
-        correct_answers = [".shape", "[0:3]", "mean", "std"]
+        correct_answers = [".shape", "0:3", "mean", "std"]
         
         shape_attr = st.selectbox(questions[0], options[0], key="fill1", index=None)
         slice_syntax = st.selectbox(questions[1], options[1], key="fill2", index=None)
