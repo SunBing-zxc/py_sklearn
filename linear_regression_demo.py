@@ -21,7 +21,7 @@ st.subheader("Success7")
 import matplotlib.font_manager as fm
 # 尝试设置常见中文字体
 chinese_fonts = [
-    'SimHei', 'WenQuanYi Micro Hei', 'Heiti TC',
+    'WenQuanYi Micro Hei', 'Heiti TC',
     'Noto Sans CJK SC', 'Droid Sans Fallback'
 ]
     
@@ -893,6 +893,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
