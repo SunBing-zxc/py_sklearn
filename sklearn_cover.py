@@ -3,58 +3,10 @@
 
 import streamlit as st
 import numpy as np
+from utils import setup_chinese_font
 
-# 第一步：导入所有必需的模块（解决 subprocess 未定义问题）
-import streamlit as st
-import subprocess  # 关键：必须导入这个模块
-import os
-import matplotlib.pyplot as plt
-import matplotlib.font_manager as fm
-
-# 保留开头的字体加载函数 + 调用
-import streamlit as st
-import os
-import matplotlib.pyplot as plt
-import matplotlib.font_manager as fm
-
-def setup_chinese_font():
-    font_path = os.path.join(os.path.dirname(__file__), "fonts", "NotoSansSC-Regular.otf")
-    if not os.path.exists(font_path):
-        st.warning("字体文件未找到")
-        plt.rcParams['font.sans-serif'] = ['WenQuanYi Micro Hei']
-        plt.rcParams['axes.unicode_minus'] = False
-        return
-    try:
-        font_prop = fm.FontProperties(fname=font_path)
-        fm.fontManager.addfont(font_path)
-        plt.rcParams['font.family'] = font_prop.get_name()
-        plt.rcParams['axes.unicode_minus'] = False
-        st.success("字体加载成功")
-    except Exception as e:
-        st.warning(f"字体加载异常：{e}")
-
+# 仅需调用一次，后续所有文件的绘图都会继承这个配置
 setup_chinese_font()
-
-# 你的业务代码（示例：绘制业务相关图表）
-st.title("我的业务分析页面")
-fig, ax = plt.subplots()
-ax.set_title("月度销售额分析（2025）")  # 中文标题
-ax.bar(["1月","2月","3月"], [100, 200, 150], label="销售额（万元）")
-ax.legend()
-st.pyplot(fig)
-
-
-# ---------------------- 测试中文显示（可选）----------------------
-st.subheader("中文显示测试")
-# Matplotlib 测试
-fig, ax = plt.subplots(figsize=(6, 3))
-ax.set_title("测试标题：线性回归分析（思源黑体）", fontsize=14)
-ax.plot([1,2,3], [4,5,6], label="测试数据：中文标签")
-ax.legend()
-st.pyplot(fig)
-
-
-
 
 # 设置页面配置
 st.set_page_config(
