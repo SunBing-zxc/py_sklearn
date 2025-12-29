@@ -242,7 +242,7 @@ def step0():
     all_answered = all(ans is not None for ans in current_answers)
     if all_answered and all(a == b for a, b in zip(current_answers, correct_answers)):
         st.info("太棒了！🎉 你已掌握基础概念，准备好深入分析吧！")
-        if st.button("进入下一步骤：数据观察与理解", key="next_step0"):
+        if st.button("进入下一步：数据观察与理解", key="next_step0"):
             complete_step(0)
             st.session_state.step = 1
             st.rerun()
@@ -506,7 +506,7 @@ plt.show()
     # 下一步按钮
     if st.session_state.step1_success: 
         st.info("哇！✨ 数据观察任务完美完成，太厉害啦！为后续分析打下好基础，继续加油！💪")
-        if st.button("进入下一步骤：数据集划分", key="to_step2"):
+        if st.button("进入下一步：数据集划分", key="to_step2"):
             complete_step(1)  # 假设已定义该函数
             st.session_state.step = 2
             st.session_state.step1_success = False
@@ -632,7 +632,7 @@ print("特征数：", X_train.shape[1])
     # 下一步按钮
     if st.session_state.step2_success: 
         st.info("✨ 数据集划分任务完美完成！成功将数据分为训练集和测试集，为后续模型训练和评估做好了准备，继续加油！💪")
-        if st.button("进入下一步骤：特征标准化", key="to_step3"):
+        if st.button("进入下一步：特征标准化", key="to_step3"):
             complete_step(2)  # 假设已定义该函数
             st.session_state.step = 3
             st.session_state.step2_success = False
@@ -792,7 +792,7 @@ X_test_scaled = scaler.___Q2___(X_test)
     # 下一步按钮
     if st.session_state.step3_success: 
         st.info("太棒了！✨ 特征标准化任务顺利完成，这为模型训练做好了关键准备，继续前进吧！💪")
-        if st.button("进入下一步骤：线性回归模型", key="to_step4"):
+        if st.button("进入下一步：线性回归模型", key="to_step4"):
             complete_step(3)
             st.session_state.step = 4
             st.session_state.step3_success = False
@@ -930,7 +930,7 @@ y_pred_linear = linear_model.____Q5____(X_test_scaled)
     # 下一步按钮
     if st.session_state.step4_success: 
         st.info("想知道能不能更精准？😉 立刻开启神经网络模型来捕捉更复杂的关系吧！🚀 ")
-        if st.button("进入下一步骤：神经网络模型", key="to_step5"):
+        if st.button("进入下一步：神经网络模型", key="to_step5"):
             complete_step(4)
             st.session_state.step = 5
             st.session_state.step4_success = False
@@ -1122,7 +1122,7 @@ plt.show()
     # 下一步按钮
     if st.session_state.step5_success: 
         st.info("神经网络像精密的预测大师，一层层拆解数据的奥秘🛠️，用非线性的智慧捕捉房价背后藏着的复杂密码！🚀 ")
-        if st.button("进入下一步骤：模型评估与对比", key="to_step6"):
+        if st.button("进入下一步：模型评估与对比", key="to_step6"):
             complete_step(5)
             st.session_state.step = 6
             st.session_state.step5_success = False
@@ -1295,7 +1295,7 @@ plt.show()
     # 下一步按钮
     if st.session_state.step6_success: 
         st.info("当数据关系单纯时，线性回归的简洁就是王道✨；当变量纠缠如乱麻，神经网络的深度才显神通🚀—— 没有绝对王者，只有适配场景的智者！")
-        if st.button("进入下一步骤：总结与思考", key="to_step7"):
+        if st.button("进入下一步：总结与思考", key="to_step7"):
             complete_step(6)
             st.session_state.step = 7
             st.session_state.step5_success = False
@@ -1491,5 +1491,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
