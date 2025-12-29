@@ -5,7 +5,7 @@ import matplotlib.font_manager as fm
 
 def setup_chinese_font():
     # 字体加载逻辑（和之前一致，仅需写一次）
-    font_path = os.path.join(os.path.dirname(__file__), "fonts", "NotoSansSC-Regular.ttf")
+    font_path = os.path.join(os.path.dirname(__file__), "fonts", "NotoSansSC-Regular.otf")
     if not os.path.exists(font_path):
         plt.rcParams['font.sans-serif'] = ['WenQuanYi Micro Hei']
         plt.rcParams['axes.unicode_minus'] = False
