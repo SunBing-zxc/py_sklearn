@@ -19,11 +19,7 @@ st.title("📚 线性回归交互式学习平台")
 st.subheader("Success4")
 
 # 设置中文字体支持
-# 清除Matplotlib缓存（关键！避免缓存导致配置不生效）
-plt.rcParams.clear()
-# 体索引（解决字体找不到的问题）
-fm._rebuild()
-# 多字体兜底配置（Streamlit Cloud必生效）
+
 plt.rcParams["font.family"] = [
     "Noto Sans CJK SC",    # 思源黑体（Cloud预装）
     "WenQuanYi Micro Hei", # 文泉驿（Cloud预装）
@@ -889,6 +885,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
