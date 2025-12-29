@@ -122,6 +122,32 @@ def complete_step(step_num):
     st.session_state.nn_step_records['step_records'][f'step_{step_num}']['completed'] = True
     st.session_state.nn_step_records['step_records'][f'step_{step_num}']['completed_time'] = time.strftime("%Y-%m-%d %H:%M:%S")
 
+# 加载本地数据集（适配 Streamlit Cloud 路径）
+def load_california_housing():
+    # 定义数据集路径
+    data_path = os.path.join(os.path.dirname(__file__), "datasets", "california_housing.csv")
+    # 读取 CSV 文件
+    df = pd.read_csv(data_path)
+    # 还原为 sklearn 数据集格式（保持后续代码兼容）
+    class HousingData:
+        def __init__(self, data, feature_names, target, target_names):
+            self.data = data
+            self.feature_names = feature_names
+            self.target = target
+            self.target_names = target_names
+    
+    # 分离特征和目标变量
+    feature_names = df.columns[:-1].tolist()  # 所有列除了最后一列
+    target = df['MedHouseVal'].values
+    data = df[feature_names].values
+    
+    return HousingData(
+        data=data,
+        feature_names=feature_names,
+        target=target,
+        target_names=['MedHouseVal']
+    )
+
 # 步骤0：项目说明
 def step0():
     st.subheader("项目说明：神经网络 vs 线性回归（加州房价预测）")
@@ -138,10 +164,11 @@ def step0():
     加州房价数据集包含加州各地区的房价中位数以及相关特征，如收入中位数、房屋年龄、平均房间数等，共8个特征，用于预测该地区的房价中位数。
     """)
     # 数据集展示
-    # 加载数据集
-    housing = fetch_california_housing()
-    st.session_state.data = housing
     
+    # 加载数据集
+    housing = load_california_housing()
+    
+    st.session_state.data = housing    
     st.subheader("数据集介绍")
     st.write("""
     该数据集包含20640个样本，8个特征，目标变量为房屋中位数价格。
@@ -1463,3 +1490,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
