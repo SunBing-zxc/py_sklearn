@@ -20,10 +20,6 @@ from learning_report import generate_evaluation
 st.set_page_config(page_title="KMeans聚类交互式学习平台", layout="wide")
 st.title("📊 KMeans聚类交互式学习平台")
 
-# 设置中文字体支持
-plt.rcParams['font.sans-serif'] = ['SimHei']
-plt.rcParams['axes.unicode_minus'] = False
-
 # 初始化会话状态（在主程序入口处）
 def init_session_state():
     if "kmeans_records" not in st.session_state:
