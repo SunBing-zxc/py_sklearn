@@ -16,11 +16,9 @@ from learning_report import generate_evaluation
 # 设置页面
 st.set_page_config(page_title="线性回归交互式学习平台", layout="wide")
 st.title("📚 线性回归交互式学习平台")
-st.subheader("Success8")
+st.subheader("Success9")
     
-# 如果没有找到中文字体，尝试使用默认字体并设置fallback
-plt.rcParams["font.family"] = 'Noto Sans CJK SC'
-plt.rcParams['axes.unicode_minus'] = False
+
 
 def generate_student_evaluation():
     """调用Deepseek API生成学生评价"""
@@ -878,6 +876,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
