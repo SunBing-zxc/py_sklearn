@@ -4,6 +4,36 @@
 import streamlit as st
 import numpy as np
 
+# 定义安装 Noto CJK 字体的函数
+def install_noto_cjk_fonts():
+    try:
+        # 1. 检查字体包是否已安装
+        result = subprocess.run(
+            ["dpkg", "-l", "fonts-noto-cjk"],
+            capture_output=True,
+            text=True
+        )
+        # 2. 如果未安装，则执行安装命令
+        if "ii  fonts-noto-cjk" not in result.stdout:
+            st.info("正在安装思源黑体（Noto CJK）字体包...")
+            # 执行更新+安装（Streamlit Cloud 无需 sudo，直接执行）
+            subprocess.run(["apt", "update"], capture_output=True)
+            subprocess.run(
+                ["apt", "install", "-y", "fonts-noto-cjk"],
+                capture_output=True
+            )
+            # 刷新字体缓存
+            subprocess.run(["fc-cache", "-fv"], capture_output=True)
+            st.success("思源黑体安装成功！")
+        else:
+            st.success("思源黑体已预装，无需重复安装")
+    except Exception as e:
+        st.warning(f"字体安装失败（不影响核心功能）：{str(e)}")
+
+# 调用安装函数（部署时自动执行）
+install_noto_cjk_fonts()
+
+
 # 设置页面配置
 st.set_page_config(
     page_title="明德智学 - 机器学习",
