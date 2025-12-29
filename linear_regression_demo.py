@@ -16,9 +16,15 @@ from learning_report import generate_evaluation
 # 设置页面
 st.set_page_config(page_title="线性回归交互式学习平台", layout="wide")
 st.title("📚 线性回归交互式学习平台")
-st.subheader("Success6")
+st.subheader("Success7")
 
-plt.rcParams['font.sans-serif'] = ['DejaVu Sans']
+plt.rcParams['font.sans-serif'] = [
+    'DejaVu Sans',
+    'WenQuanYi Micro Hei',
+    'Noto Sans CJK SC',
+    'Droid Sans Fallback',
+    'sans-serif'
+]
 plt.rcParams['axes.unicode_minus'] = False  # 负号正常显示
 
 def generate_student_evaluation():
@@ -877,6 +883,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
