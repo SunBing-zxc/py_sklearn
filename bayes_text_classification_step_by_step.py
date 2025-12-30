@@ -14,19 +14,7 @@ import os
 from datetime import datetime
 from learning_report import generate_report_step
 import json
-# 文本类别中文映射
-# 类别映射
-CATEGORY_MAP = [
-    ['comp.graphics', '计算机图形学'], 
-    ['rec.motorcycles', '摩托车'],
-    ['rec.sport.baseball', '棒球运动'],
-    ['sci.space', '太空科学'],
-    ['talk.politics.misc', '政治讨论']
-]
-# 提取英文类别列表
-TARGET_CATEGORIES = [w[0] for w in CATEGORY_MAP]
-# 中文类别列表
-FEATURE_NAMES_CN = [w[1] for w in CATEGORY_MAP]
+
 
 # ===================== Session State 管理 =====================
 def init_session_state():
@@ -128,6 +116,7 @@ def init_data():
         st.session_state['X_test_text'] = test_data.data
         st.session_state['y_train'] = train_data.target
         st.session_state['y_test'] = test_data.target
+        st.session_state['chinese_target_names'] = train_data.chinese_target_names
         
 # 步骤0：项目说明与数据展示
 def step0():
@@ -1395,6 +1384,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
