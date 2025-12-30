@@ -273,7 +273,7 @@ def text_prediction_demo(model, vectorizer, label_names, lang):
     # 输入文本
     user_text = st.text_input("输入文本进行预测:", 
                            "这个产品很好，我非常满意" if lang == "中文" else 
-                           "The team won the hockey game by two points")
+                           "The motorcycle engine has a powerful 1000cc motor")
     
     if st.button("文本分类预测"):
         # 预处理
@@ -1052,6 +1052,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
