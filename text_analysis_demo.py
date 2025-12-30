@@ -433,16 +433,24 @@ def text_preprocessing_section():
     })
     
 def text_analysis_section():
-    """文本分类专项"""
+    """文本分类专项（适配5个类别）"""
     st.subheader("文本分类流程演示")
     st.write("### 1. 📊 文本分类数据展示")
+    
     texts, labels, label_names, _ = load_sample_data("新闻主题分类")
+    # 手动定义中文类别名（和JSON中一致）
+    cn_label_names = ["计算机图形学", "摩托车", "棒球运动", "太空科学", "政治讨论"]
+    
+    # 情况2：如果load_sample_data扩展返回中文类别名（texts, labels, label_names, cn_label_names, _）
+    # texts, labels, label_names, cn_label_names, _ = load_sample_data("新闻主题分类")
+    
     st.write(f"💡 **数据集信息: {len(texts)}个样本，{len(label_names)}个类别**")
+    
     if texts:
         category_data = {
-        "类别编号": [0,1,2,3],
-        "类别名称": st.session_state.en_label_names,
-        "中文释义": st.session_state.cn_label_names
+            "类别编号": list(range(len(label_names))),  # 动态适配5个类别（0-4）
+            "类别名称": label_names,  # 替换原st.session_state.en_label_names（避免依赖外部状态）
+            "中文释义": cn_label_names  # 替换原st.session_state.cn_label_names
         }
         category_df = pd.DataFrame(category_data)
             
@@ -461,7 +469,7 @@ def text_analysis_section():
         st.write("**📁 样本示例**")
         sample_options = [
             f"样本{idx} - {label_names[labels[idx]]}" 
-            for idx in range(min(10, len(texts)))  # 最多展示前10条样本，和原逻辑一致
+            for idx in range(min(10, len(texts)))  # 最多展示前10条样本
         ]
         # 创建下拉列表，默认选中第0条
         selected_sample = st.selectbox(
@@ -474,23 +482,28 @@ def text_analysis_section():
         sample_idx = sample_options.index(selected_sample)
         # 展示样本内容
         st.write(f"文本: {texts[sample_idx]}")
-        st.write(f"标签: {st.session_state.en_label_names[labels[sample_idx]]} | {st.session_state.cn_label_names[labels[sample_idx]]}")
+        # ========== 修改点3：样本标签显示适配5个类别 ==========
+        st.write(f"标签: {label_names[labels[sample_idx]]} | {cn_label_names[labels[sample_idx]]}")
         
         # 特征提取演示
         st.write("### 2. 📊 情感分析文本特征提取") 
         X, vectorizer, lang = demo_feature_extraction(texts, "英文")
+        
         st.write("### 3. 📊 模型训练与评估")
+        # ========== 修改点4：更新任务说明中的类别描述（4类→5类） ==========
         st.info("""
         ##### 👉 任务说明
-        基于包含 500 个样本、覆盖 “计算机图形学”、“休闲体育 - 曲棍球” 等 4 类主题的新闻数据集，用**朴素贝叶斯**或**逻辑回归**模型完成文本分类任务。
-    """)    
+        基于包含 500 个样本、覆盖 “计算机图形学”、“摩托车”、“棒球运动”、“太空科学”、“政治讨论” 等 5 类主题的新闻数据集，用**朴素贝叶斯**或**逻辑回归**模型完成文本分类任务。
+        """)    
+        
         # 划分训练集和测试集
         test_size = st.slider("测试集比例", 0.1, 0.5, 0.2)
         X_train, X_test, y_train, y_test = train_test_split(
             X,
             labels,
             test_size=test_size,
-            random_state=42, stratify=labels
+            random_state=42, 
+            stratify=labels  # 分层抽样，保证5个类别在训练/测试集中分布一致
         )
 
         # 选择模型
@@ -515,12 +528,14 @@ def text_analysis_section():
         # 分类详细报告
         st.write("##### 📋 文本分类详细报告")
         # 解析classification_report为DataFrame
-        report_dict = classification_report(y_test, y_pred, target_names=st.session_state.en_label_names, output_dict=True)
+        report_dict = classification_report(y_test, y_pred, target_names=label_names, output_dict=True)
         # 剔除无关行（如accuracy），保留类别级指标
         report_df = pd.DataFrame(report_dict).T.drop(["accuracy", "macro avg", "weighted avg"])
         # 保留4位小数，优化显示
         report_df = report_df.round(4)
-        report_df.insert(0, "类别名(CN)", st.session_state.cn_label_names)
+        
+        # ========== 修改点5：分类报告中插入5个中文类别名 ==========
+        report_df.insert(0, "类别名(CN)", cn_label_names)
         # 重置索引并将原索引（英文类别名）转为列
         report_df = report_df.reset_index().rename(columns={"index": "类别名(EN)"})
         # 重命名指标列为中文
@@ -532,23 +547,24 @@ def text_analysis_section():
         }, inplace=True)
         st.dataframe(report_df, use_container_width=True)
         
-        # 混淆矩阵（中文标签，核心修改）
+        # 混淆矩阵（中文标签，适配5个类别）
         st.write("##### 🔍 混淆矩阵")
         cols=st.columns([1,5,1])
         with cols[1]:
-            fig, ax = plt.subplots(figsize=(8, 6))
+            # ========== 修改点6：混淆矩阵适配5个类别，调整图表大小避免拥挤 ==========
+            fig, ax = plt.subplots(figsize=(10, 8))  # 增大图表尺寸（原8,6→10,8）
             cm = confusion_matrix(y_test, y_pred)
-            disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=st.session_state.cn_label_names)
-            disp.plot(ax=ax, cmap="Blues",text_kw={"size": 20})
-            plt.title("混淆矩阵（中文标签）", fontsize=14)
+            disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=cn_label_names)
+            disp.plot(ax=ax, cmap="Blues", text_kw={"size": 16})  # 调大字体
+            plt.title("混淆矩阵（中文标签）", fontsize=16)
             plt.xticks(rotation=15)  # 标签旋转避免重叠
-            ax.set_xlabel('预测值',fontsize=12)
-            ax.set_ylabel('真实值',fontsize=12)
+            ax.set_xlabel('预测值', fontsize=14)
+            ax.set_ylabel('真实值', fontsize=14)
             st.pyplot(fig)
             
         st.write("### 5. 📊 文本分类预测")   
-            # 预测演示
-        text_prediction_demo(model,vectorizer,label_names,lang)
+        # 预测演示
+        text_prediction_demo(model, vectorizer, label_names, lang)
             
 
     # 记录数据生成操作
@@ -1036,6 +1052,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
