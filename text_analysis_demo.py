@@ -267,52 +267,6 @@ def demo_feature_extraction(texts, lang):
     
     return X, vectorizer, lang
 
-# 文本预测功能
-def text_prediction_demo(model, vectorizer, label_names, lang):
-    """演示文本预测"""
-    # 输入文本
-    user_text = st.text_input("输入文本进行预测:", "这个产品很好，我非常满意" )
-    
-    if st.button("文本分类预测"):
-        # 预处理
-        processed_text = preprocess_text(user_text, is_chinese=(lang == "中文"))
-        # 向量化
-        text_vec = vectorizer.transform([processed_text])
-        # 预测
-        pred = model.predict(text_vec)[0]
-        pred_proba = model.predict_proba(text_vec)[0].max()
-        
-        st.success(f"预测结果:  {st.session_state.en_label_names[pred]} / {st.session_state.cn_label_names[pred]}  (置信度: {pred_proba:.2f})")
-
-        st.subheader("关键特征分析")
-        st.info("""只有选择**逻辑回归**才能显示关键特征分析图，因为只有系数的模型才能分析 “特征重要性”
-- ✅ **逻辑回归**：有coef_属性 → coef_里存的是 “每个词（特征）对 4 个类别（计算机图形学 / 曲棍球等）的权重值”，比如 “图形” 这个词对 “计算机图形学” 类别的系数为正且数值大，说明这个词能显著预测该类别。
-- ❌ **朴素贝叶斯**：没有coef_属性 → 朴素贝叶斯是基于概率的模型，不计算特征系数，因此无法通过coef_分析特征重要性。
-            """)        
-        # 显示重要特征
-        if hasattr(model, 'coef_'):
-            # 获取特征重要性
-            coefs = model.coef_[0]
-            feature_names = vectorizer.get_feature_names_out()
-            
-            # 排序并显示
-            top_n = min(10, len(feature_names))
-            indices = np.argsort(np.abs(coefs))[-top_n:]
-            top_features = [feature_names[i] for i in indices]
-            top_coefs = [coefs[i] for i in indices]
-            cols=st.columns([1,5,1])
-            with cols[1]:            
-                # 可视化
-                fig, ax = plt.subplots(figsize=(8, 6))
-                sns.barplot(x=top_coefs, y=top_features, ax=ax)
-                ax.set_title("对预测影响最大的特征")
-                st.pyplot(fig)
-            st.info("""
-- 👉 **特征**就是词袋 / TF-IDF 生成的词汇表中的所有词（比如 “graphics”、“hockey”、“space” 等），数量等于你设置的 “最大特征数”。
-- 👉 最终可视化的是 “权重绝对值 Top10 的特征”，而非所有特征。""")
-
-
-
 # 各模块实现
 def text_introduction_section():
     """文本分析基础介绍"""
@@ -570,7 +524,7 @@ def text_analysis_section():
             options=list(example_texts.values()),
             index=0
         )
-        if st.button("文本分类预测", type="primary"):
+        if st.button("文本分类预测"):
             # 预处理
             processed_text = preprocess_text(selected_example, is_chinese=(lang == "中文"))
             # 向量化
@@ -1112,6 +1066,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
