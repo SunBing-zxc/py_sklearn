@@ -87,7 +87,6 @@ def complete_step(step_num):
 
 
 # ===================== 数据加载=====================
-@st.cache_data
 # 加载本地20新闻组数据集（适配Streamlit Cloud）
 def load_newsgroups_data():
     # 定义数据集路径
@@ -1393,6 +1392,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
