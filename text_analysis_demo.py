@@ -116,11 +116,10 @@ def preprocess_text(text, is_chinese=False):
 def load_sample_data(dataset_name):
     """加载不同类型的文本数据集"""
     if dataset_name == "新闻主题分类":
-        # 加载英文新闻数据集
         data_path = os.path.join(
             os.path.dirname(__file__), 
             "datasets", 
-            "20newsgroups.json"
+            "20newsgroups_selected.json"  # 👈 修改为新的JSON文件名
         )
         
         # 2. 读取本地 JSON 文件
@@ -129,11 +128,12 @@ def load_sample_data(dataset_name):
         
         with open(data_path, "r", encoding="utf-8") as f:
             dataset = json.load(f)
-        
-        # 3. 还原数据（和原代码逻辑完全一致）
-        texts = [preprocess_text(text) for text in dataset["data"]]  # 前500条已在保存时截取
-        labels = dataset["target"]
-        label_names = dataset["target_names"]  # 对应 ['comp.graphics', 'rec.sport.hockey', 'sci.space', 'talk.politics.misc']
+
+        texts = [preprocess_text(text) for text in dataset["train"]["data"]]
+        labels = dataset["train"]["target"]
+        label_names = dataset["train"]["target_names"]  # 英文类别名
+        # 新增：获取中文类别名（从JSON中读取）
+        chinese_label_names = dataset["train"]["chinese_target_names"]
         
         # 4. 保持返回值和原代码一致
         return texts, labels, label_names, "英文"
@@ -1036,6 +1036,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
