@@ -12,7 +12,7 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import (classification_report, confusion_matrix, 
                              accuracy_score, ConfusionMatrixDisplay)
-from sklearn.datasets import fetch_20newsgroups
+import os
 import jieba
 import re
 import time
@@ -116,12 +116,27 @@ def load_sample_data(dataset_name):
     """加载不同类型的文本数据集"""
     if dataset_name == "新闻主题分类":
         # 加载英文新闻数据集
-        categories = ['rec.sport.hockey', 'sci.space', 'talk.politics.misc', 'comp.graphics']
-        newsgroups = fetch_20newsgroups(subset='all', categories=categories, remove=('headers', 'footers', 'quotes'))
-        texts = [preprocess_text(text) for text in newsgroups.data[:500]]  # 取部分数据加快速度
-        labels = newsgroups.target[:500]
-        label_names = [newsgroups.target_names[i] for i in range(len(newsgroups.target_names))]
+        data_path = os.path.join(
+            os.path.dirname(__file__), 
+            "datasets", 
+            "20newsgroups_selected_categories.json"
+        )
+        
+        # 2. 读取本地 JSON 文件
+        if not os.path.exists(data_path):
+            raise FileNotFoundError(f"数据集文件未找到：{data_path}")
+        
+        with open(data_path, "r", encoding="utf-8") as f:
+            dataset = json.load(f)
+        
+        # 3. 还原数据（和原代码逻辑完全一致）
+        texts = [preprocess_text(text) for text in dataset["data"]]  # 前500条已在保存时截取
+        labels = dataset["target"]
+        label_names = dataset["target_names"]  # 对应 ['comp.graphics', 'rec.sport.hockey', 'sci.space', 'talk.politics.misc']
+        
+        # 4. 保持返回值和原代码一致
         return texts, labels, label_names, "英文"
+
     
     elif dataset_name == "中文情感分析":
         # 优化后的正面样本（15条独立样本，含模糊表达和复杂语境）
@@ -1020,4 +1035,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
