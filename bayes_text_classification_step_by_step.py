@@ -150,7 +150,7 @@ def step0():
         
         st.write("**样本文本示例**：")
         for i, (text, target_idx) in enumerate(zip(sample_texts, sample_targets)):
-            cn_name = FEATURE_NAMES_CN[target_idx]
+            cn_name = st.session_state.chinese_target_names[target_idx]
             st.info(f"**样本 {i+1}**（类别：{cn_name}）：{text[:300]}...")
    
     # 知识小测验部分
@@ -1384,6 +1384,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
