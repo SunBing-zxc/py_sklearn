@@ -348,7 +348,7 @@ print(f"新闻主题类别：{newsgroups_train.target_names}")
 
     # 反思输入
     reflection = st.text_input(
-        "【反思】在本步骤中，你有什么不太理解的内容？（例如：语义）",
+        "【反思】在本步骤中，你有什么不太理解的内容？（例如：shuffle）",
         key="step1_reflection",
         autocomplete="off",
     )    
@@ -1384,6 +1384,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
