@@ -290,7 +290,7 @@ print(f"新闻主题类别：{newsgroups_train.target_names}")
         st.info(f"""
         1. 训练集文本数：{len(st.session_state['X_train_text'])}
         2. 测试集文本数：{len(st.session_state['X_test_text'])}
-        3. 新闻主题类别：{FEATURE_NAMES_CN}
+        3. 新闻主题类别：{st.session_state.chinese_target_names}
         """)
         st.session_state.step1_success = True
 
@@ -1384,6 +1384,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
