@@ -120,7 +120,7 @@ def load_sample_data(dataset_name):
         data_path = os.path.join(
             os.path.dirname(__file__), 
             "datasets", 
-            "20newsgroups_selected_categories.json"
+            "20newsgroups.json"
         )
         
         # 2. 读取本地 JSON 文件
@@ -1036,6 +1036,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
