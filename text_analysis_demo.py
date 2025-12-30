@@ -567,7 +567,7 @@ def text_analysis_section():
         # 下拉选择例句
         selected_example = st.selectbox(
             "选择预设例句",
-            options=list(example_texts.keys()),
+            options=list(example_texts.values()),
             index=0
         )
         if st.button("文本分类预测", type="primary"):
@@ -1112,6 +1112,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
