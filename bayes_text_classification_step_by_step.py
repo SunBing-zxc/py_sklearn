@@ -89,30 +89,33 @@ def complete_step(step_num):
 # ===================== 数据加载=====================
 # 加载本地20新闻组数据集（适配Streamlit Cloud）
 def load_newsgroups_data():
-    # 定义数据集路径
-    data_path = os.path.join(os.path.dirname(__file__), "datasets", "20newsgroups.json")
+    # 定义数据集路径（使用新的5个主题的JSON文件）
+    data_path = os.path.join(os.path.dirname(__file__), "datasets", "20newsgroups_selected.json")
     
     # 读取JSON文件
     with open(data_path, "r", encoding="utf-8") as f:
         dataset = json.load(f)
     
-    # 封装为sklearn数据集格式（保持后续代码兼容）
+    # 封装为sklearn数据集格式（增加中文类别名属性）
     class NewsgroupsData:
-        def __init__(self, data, target, target_names):
+        def __init__(self, data, target, target_names, chinese_target_names):
             self.data = data
             self.target = target
-            self.target_names = target_names
+            self.target_names = target_names  # 英文类别名
+            self.chinese_target_names = chinese_target_names  # 新增中文类别名属性
     
-    # 构造训练集和测试集
+    # 构造训练集和测试集（加载中文类别名）
     train_data = NewsgroupsData(
         data=dataset["train"]["data"],
         target=np.array(dataset["train"]["target"]),
-        target_names=dataset["train"]["target_names"]
+        target_names=dataset["train"]["target_names"],
+        chinese_target_names=dataset["train"]["chinese_target_names"]
     )
     test_data = NewsgroupsData(
         data=dataset["test"]["data"],
         target=np.array(dataset["test"]["target"]),
-        target_names=dataset["test"]["target_names"]
+        target_names=dataset["test"]["target_names"],
+        chinese_target_names=dataset["test"]["chinese_target_names"]
     )
     
     return train_data, test_data
@@ -1392,6 +1395,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
