@@ -485,7 +485,7 @@ Counter 本质上是字典（dict）的子类，它将元素作为键，元素�
         ax1.set_title('训练集新闻主题分布')
         ax1.set_xticks(list(train_class_count.keys()))
         ax1.set_xticklabels(
-            [FEATURE_NAMES_CN[i] for i in train_class_count.keys()],
+            [st.session_state.chinese_target_names[i] for i in train_class_count.keys()],
             rotation=45, 
             ha='right'
         )
@@ -975,8 +975,8 @@ for class_idx, class_name in enumerate(class_names):
                 '#FFA07A',  # 浅橙色
                 '#98D8C8'   # 薄荷绿
             ]
-            for class_name in FEATURE_NAMES_CN:  # 使用中文类别名
-                class_idx = FEATURE_NAMES_CN.index(class_name)
+            for class_name in st.session_state.chinese_target_names:  # 使用中文类别名
+                class_idx = st.session_state.chinese_target_names.index(class_name)
                 top_word_idx = st.session_state.model.feature_log_prob_[class_idx].argsort()[-5:]  # 补充切片参数
                 top_words = [feature_names[idx] for idx in top_word_idx]
                     
@@ -1384,6 +1384,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
