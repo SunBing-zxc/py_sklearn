@@ -1135,7 +1135,7 @@ print(f"错误分类样本数：{len(error_indices)}")
             report_str = classification_report(
                 st.session_state.y_test,
                 y_pred,
-                target_names=FEATURE_NAMES_CN,
+                target_names=st.session_state.chinese_target_names,
                 output_dict=False  # 先获取字符串格式用于解析
             )
 
@@ -1384,6 +1384,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
