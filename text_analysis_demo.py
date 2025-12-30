@@ -271,9 +271,7 @@ def demo_feature_extraction(texts, lang):
 def text_prediction_demo(model, vectorizer, label_names, lang):
     """演示文本预测"""
     # 输入文本
-    user_text = st.text_input("输入文本进行预测:", 
-                           "这个产品很好，我非常满意" if lang == "中文" else 
-                           "The motorcycle engine has a powerful 1000cc motor")
+    user_text = st.text_input("输入文本进行预测:", "这个产品很好，我非常满意" )
     
     if st.button("文本分类预测"):
         # 预处理
@@ -1114,6 +1112,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
