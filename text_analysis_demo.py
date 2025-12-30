@@ -441,9 +441,6 @@ def text_analysis_section():
     # 手动定义中文类别名（和JSON中一致）
     cn_label_names = ["计算机图形学", "摩托车", "棒球运动", "太空科学", "政治讨论"]
     
-    # 情况2：如果load_sample_data扩展返回中文类别名（texts, labels, label_names, cn_label_names, _）
-    # texts, labels, label_names, cn_label_names, _ = load_sample_data("新闻主题分类")
-    
     st.write(f"💡 **数据集信息: {len(texts)}个样本，{len(label_names)}个类别**")
     
     if texts:
@@ -563,8 +560,73 @@ def text_analysis_section():
             st.pyplot(fig)
             
         st.write("### 5. 📊 文本分类预测")   
-        # 预测演示
-        text_prediction_demo(model, vectorizer, label_names, lang)
+        # 预设例句（对应摩托车、棒球、太空类）
+        example_texts = {
+            "摩托车类例句": "The motorcycle engine has a powerful 1000cc motor",
+            "棒球类例句": "The baseball player hit a home run in the game",
+            "太空类例句": "The rocket launched into space to explore Mars"
+        }
+        # 下拉选择例句
+        selected_example = st.selectbox(
+            "选择预设例句",
+            options=list(example_texts.keys()),
+            index=0
+        )
+        if st.button("文本分类预测", type="primary"):
+            # 预处理
+            processed_text = preprocess_text(selected_example, is_chinese=(lang == "中文"))
+            # 向量化
+            text_vec = vectorizer.transform([processed_text])
+            
+            # 预测
+            pred_idx = model.predict(text_vec)[0]  # 预测的类别索引
+            pred_proba = model.predict_proba(text_vec)[0].max()  # 最高置信度
+            
+            # ========== 核心修复2：使用数据集的真实类别名，而非session_state ==========
+            pred_en = label_names[pred_idx]  # 数据集返回的英文类别
+            pred_cn = cn_label_names[pred_idx]  # 对应的中文名称
+            
+            # 显示正确的预测结果
+            st.success(f"预测结果:  {pred_en} / {pred_cn}  (置信度: {pred_proba:.2f})")
+    
+            # ========== 核心修复2：正确的特征重要性分析 ==========
+            st.subheader("关键特征分析")
+            if hasattr(model, 'coef_'):  # 仅逻辑回归有coef_属性
+                st.info("✅ 逻辑回归模型 - 显示对当前预测类别影响最大的特征")
+                
+                # 修复：取当前预测类别的系数，而非第一个类别的系数
+                coefs = model.coef_[pred_idx]
+                feature_names = vectorizer.get_feature_names_out()
+                
+                # 取绝对值前10的特征（影响最大）
+                top_n = min(10, len(feature_names))
+                # 按系数绝对值排序，取top_n
+                indices = np.argsort(np.abs(coefs))[-top_n:]
+                top_features = [feature_names[i] for i in indices]
+                top_coefs = [coefs[i] for i in indices]
+                
+                # 可视化特征重要性
+                cols = st.columns([1, 5, 1])
+                with cols[1]:
+                    fig, ax = plt.subplots(figsize=(8, 6))
+                    sns.barplot(x=top_coefs, y=top_features, ax=ax, palette="coolwarm")
+                    ax.set_title(f"对「{pred_cn}」类别影响最大的特征", fontsize=12)
+                    ax.set_xlabel("特征系数（正负表示促进/抑制）", fontsize=10)
+                    st.pyplot(fig)
+                
+                st.info("""
+                📌 特征系数解读：
+                - 正数：该词越频繁，越倾向于预测为当前类别；
+                - 负数：该词越频繁，越不倾向于预测为当前类别；
+                - 绝对值越大，特征对分类的影响越强。
+                """)
+            else:
+                # 朴素贝叶斯无coef_属性，友好提示
+                st.warning("""
+                ❌ 朴素贝叶斯模型无法显示特征重要性：
+                - 朴素贝叶斯是基于概率的模型，无特征系数（coef_）属性；
+                - 如需分析特征重要性，请选择「逻辑回归 (LogisticRegression)」模型。
+                """)
             
 
     # 记录数据生成操作
@@ -1052,6 +1114,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
