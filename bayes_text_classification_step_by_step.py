@@ -496,7 +496,7 @@ Counter 本质上是字典（dict）的子类，它将元素作为键，元素�
         ax2.set_title('测试集新闻主题分布')
         ax2.set_xticks(list(test_class_count.keys()))
         ax2.set_xticklabels(
-            [FEATURE_NAMES_CN[i] for i in test_class_count.keys()],
+            [st.session_state.chinese_target_names[i] for i in test_class_count.keys()],
             rotation=45, 
             ha='right'
         )
@@ -1384,6 +1384,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
