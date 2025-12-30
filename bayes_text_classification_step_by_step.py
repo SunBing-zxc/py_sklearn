@@ -13,9 +13,6 @@ from collections import Counter
 import time
 from datetime import datetime
 from learning_report import generate_report_step
-# 设置中文字体
-plt.rcParams['font.sans-serif'] = ['SimHei']
-plt.rcParams['axes.unicode_minus'] = False
 
 # 文本类别中文映射
 # 类别映射
@@ -91,27 +88,39 @@ def complete_step(step_num):
 # ===================== 数据加载=====================
 @st.cache_data
 def load_newsgroups_data():
-    """
-    纯数据加载函数：只返回数据，不修改Session State
-    返回：train_data, test_data
-    """
-    # 加载训练集
-    newsgroups_train = fetch_20newsgroups(
-        subset='train',
-        categories=TARGET_CATEGORIES,
-        remove=('headers', 'footers', 'quotes'),
-        shuffle=True,
-        random_state=42
+import json
+import os
+import numpy as np
+
+# 加载本地20新闻组数据集（适配Streamlit Cloud）
+def load_newsgroups_data():
+    # 定义数据集路径
+    data_path = os.path.join(os.path.dirname(__file__), "datasets", "20newsgroups.json")
+    
+    # 读取JSON文件
+    with open(data_path, "r", encoding="utf-8") as f:
+        dataset = json.load(f)
+    
+    # 封装为sklearn数据集格式（保持后续代码兼容）
+    class NewsgroupsData:
+        def __init__(self, data, target, target_names):
+            self.data = data
+            self.target = target
+            self.target_names = target_names
+    
+    # 构造训练集和测试集
+    train_data = NewsgroupsData(
+        data=dataset["train"]["data"],
+        target=np.array(dataset["train"]["target"]),
+        target_names=dataset["train"]["target_names"]
     )
-    # 加载测试集
-    newsgroups_test = fetch_20newsgroups(
-        subset='test',
-        categories=TARGET_CATEGORIES,
-        remove=('headers', 'footers', 'quotes'),
-        shuffle=True,
-        random_state=42
+    test_data = NewsgroupsData(
+        data=dataset["test"]["data"],
+        target=np.array(dataset["test"]["target"]),
+        target_names=dataset["test"]["target_names"]
     )
-    return newsgroups_train, newsgroups_test
+    
+    return train_data, test_data
 
 def init_data():
     """初始化数据（将加载的数据存入Session State）"""
@@ -1388,3 +1397,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
