@@ -10,6 +10,7 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn.metrics import accuracy_score, classification_report
 from collections import Counter
 import time
+import os
 from datetime import datetime
 from learning_report import generate_report_step
 
@@ -84,13 +85,9 @@ def complete_step(step_num):
     st.session_state.bys_step_records['step_records'][f'step_{step_num}']['completed'] = True
     st.session_state.bys_step_records['step_records'][f'step_{step_num}']['completed_time'] = time.strftime("%Y-%m-%d %H:%M:%S")
 
+
 # ===================== 数据加载=====================
 @st.cache_data
-def load_newsgroups_data():
-import json
-import os
-import numpy as np
-
 # 加载本地20新闻组数据集（适配Streamlit Cloud）
 def load_newsgroups_data():
     # 定义数据集路径
@@ -1396,5 +1393,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
