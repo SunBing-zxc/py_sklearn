@@ -17,25 +17,6 @@ from learning_report import generate_evaluation
 st.set_page_config(page_title="线性回归交互式学习平台", layout="wide")
 st.title("📚 线性回归交互式学习平台")
 
-def generate_student_evaluation():
-    """调用Deepseek API生成学生评价"""
-    try:
-        # 1. 加载并预处理数据
-        processed_data = load_student_records_from_session()
-        
-        # 2. 构建提示词
-        prompt = build_evaluation_prompt(processed_data)
-        
-        # 3. 调用Deepseek API
-        with st.spinner("AI正在分析学习记录..."):
-            evaluation = ask_ai_assistant(prompt, context="学生学习行为评价")
-        
-        return evaluation
-    
-    except Exception as e:
-        return f"评价生成失败：{str(e)}"
-
-    
 def display_chat_interface(context=""):
     """显示聊天界面（不保存历史记录）"""
     st.sidebar.markdown("---")
@@ -82,9 +63,10 @@ def display_chat_interface(context=""):
         # 显示当前问题
         st.sidebar.markdown(f"**你:** {question}")
         
-        # 获取回答
-        with st.spinner("助教思考中..."):
-            answer = ask_ai_assistant(question,context)
+        # 获取回答（修改：在侧边栏显示spinner）
+        with st.sidebar:  # 先进入侧边栏上下文
+            with st.spinner("助教思考中..."):  # 再调用spinner
+                answer = ask_ai_assistant(question, context)
         
         # 显示当前回答
         st.sidebar.markdown(f"**助教:** {answer}")

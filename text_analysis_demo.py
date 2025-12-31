@@ -89,9 +89,10 @@ def display_chat_interface(context=""):
         # 显示当前问题
         st.sidebar.markdown(f"**你:** {question}")
         
-        # 获取回答
-        with st.spinner("助教思考中..."):
-            answer = ask_ai_assistant(question, context)
+        # 获取回答（修改：在侧边栏显示spinner）
+        with st.sidebar:  # 先进入侧边栏上下文
+            with st.spinner("助教思考中..."):  # 再调用spinner
+                answer = ask_ai_assistant(question, context)
         
         # 显示当前回答
         st.sidebar.markdown(f"**助教:** {answer}")

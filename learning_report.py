@@ -122,7 +122,7 @@ def load_module_records(module_type, raw_records):
                                      if i > 0 and m == raw_records["module_sequence"][i-1]])
                 }
             }
-    elif module_type == "ANN":
+    elif module_type == "Neural_Network":
         return {
             "knowledge": {
                 "quiz_score": raw_records.get("ANN_quiz", {}).get("score", 0),
@@ -203,19 +203,14 @@ def load_module_records(module_type, raw_records):
 def build_evaluation_prompt(module_type, processed_data):
     """根据模块类型构建针对性的评价提示词"""
     base_prompt = f"""
-    你是教育评价专家，基于学生的{module_type}学习记录，从以下维度分析：
-    1. 知识理解：测验得分、错误知识点、AI提问反映的概念掌握程度；
-    2. 操作技能：实验次数、参数调整合理性、模型指标表现；
-    3. 学习习惯：模块访问顺序、停留时间、重复学习有效性。如果学生测验有没有满分，但多次作答并最终得到满分时，给予热情的表扬！
-    注意：
-    1不要出现具体的次数，可以大概描述为“零次，少数，多次，很多次”等类似描述
-    2增加一些Emoji，使回答更生动
-    
-    
-    学生数据：
-    {json.dumps(processed_data, ensure_ascii=False, indent=2)}
-    
-    输出要求：总体总结（1句）+ 三维度分析（结合数据）+ 3条提升建议，500字以内。
+请仔细分析以下JSON文件中记录的学生学习数据，客观评价该学生的学习情况。
+需要重点关注文件中明确记录的测验分数，务必以文件内的实际数据为准，不得自行假设或更改分数。
+请从测验表现、薄弱知识点、学习行为（如学习模块的参与情况、时长、是否向AI提问等）、技能掌握等方面进行分析，指出其优势与不足，并给出针对性的学习建议。
+
+注意：不要出现具体的次数，用“少数，多数，较多”等词表示
+
+学生数据：{json.dumps (processed_data, ensure_ascii=False, indent=2)}
+输出要求：总体总结（1 句）+ 三维度分析（结合数据）+ 3 条提升建议，500 字以内。
     """
 
     return base_prompt.strip()
@@ -225,6 +220,7 @@ def generate_evaluation(module_type, raw_records):
     """生成最终学习报告的入口函数"""
     try:
         processed_data = load_module_records(module_type, raw_records)
+            
         prompt = build_evaluation_prompt(module_type, processed_data)
         with st.spinner(f"AI正在分析你的学习记录..."):
             return ask_ai_assistant(question=prompt, context=f"{module_type}学习评价")

@@ -1,5 +1,5 @@
 #  C:\Users\孙冰\Desktop\AI助教25-12-07
-#  streamlit run C:\Users\孙冰\Desktop\AI助教25-12-07\sklearn_cover.py
+#  streamlit run C:\Users\孙冰\Desktop\py_sklearn-main\sklearn_cover.py
 
 import streamlit as st
 import numpy as np
@@ -18,6 +18,7 @@ st.set_page_config(
 # 自定义CSS样式 - 增强按钮（移除颜色相关设置）
 st.markdown("""
 <style>
+
     /* 顶部彩色横条 */
     .top-bar {
         height: 8px;
@@ -65,22 +66,22 @@ st.markdown("""
         margin-bottom: 2rem;
     }
     
-    /* 按钮容器调整 - 上移并居中 */
+ /* 按钮容器调整 */
     .button-container {
-        margin: 0rem auto 1rem;  /* 减小顶部margin实现上移，auto实现水平居中 */
-        width: 80%;  /* 限制容器宽度，增强居中效果 */
-        text-align: center;  /* 文本居中 */
+        margin: 2rem auto;
+        width: 90%;
+        text-align: center;
     }
     
     .footer {
         text-align: center;
         color: #7f8c8d;
-        margin-top: 3rem;
-        padding-top: 1rem;
+        margin-top: 4rem;
+        padding: 2rem 0 1rem 0;
         border-top: 1px solid #eaeaea;
     }
     
-    /* 按钮样式 - 加宽、加大字体（移除颜色相关设置） */
+    /* 按钮样式 - 调整为适中深蓝色边框 */
     .stButton > button {
         font-size: 2rem;  /* 加大字体 */
         padding: 1rem;
@@ -90,13 +91,16 @@ st.markdown("""
         height: auto;
         width: 100%;  /* 适当加宽 */
         margin: 0 -10%;  /* 调整外边距配合居中 */
-        border-width: 3px;  /* 加粗边框 */
+        border-width: 2px;  /* 加粗边框 */
         border-style: solid;  /* 确保边框样式生效 */
+        border-color: #2980b9; /* 适中深蓝色边框（比之前浅一些） */
+        color: #2980b9; /* 文字颜色与边框呼应 */
     }
     
-    /* 按钮悬停效果（移除颜色相关设置） */
     .stButton > button:hover {
         transform: translateY(-3px);
+        box-shadow: 0 8px 15px rgba(52, 152, 219, 0.15);
+        background-color: #f0f7ff;
     }
 </style>
 """, unsafe_allow_html=True)

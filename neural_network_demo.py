@@ -82,10 +82,10 @@ def display_chat_interface(context=""):
         # 显示当前问题
         st.sidebar.markdown(f"**你:** {question}")
         
-        # 获取回答
-        with st.spinner("助教思考中..."):
-            time.sleep(1)  # 模拟思考时间
-            answer = ask_ai_assistant(question, context)
+        # 获取回答（修改：在侧边栏显示spinner）
+        with st.sidebar:  # 先进入侧边栏上下文
+            with st.spinner("助教思考中..."):  # 再调用spinner
+                answer = ask_ai_assistant(question, context)
         
         # 显示当前回答
         st.sidebar.markdown(f"**助教:** {answer}")
@@ -1111,7 +1111,7 @@ def main():
         st.sidebar.markdown("---")
         if st.sidebar.button("神经网络模块学习报告"):
             report = generate_evaluation(
-                module_type="ANN",
+                module_type="Neural_Network",
                 raw_records=st.session_state.nn_records
             )
             st.write("### 神经网络模块学习情况报告")
